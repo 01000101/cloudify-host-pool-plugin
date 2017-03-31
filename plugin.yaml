@@ -5,18 +5,16 @@
 plugins:
   hostpool:
     executor: central_deployment_agent
-    source: https://github.com/cloudify-cosmo/cloudify-host-pool-plugin/archive/1.4.zip
-    package_name: cloudify-host-pool-plugin
-    package_version: '1.4'
+    source: https://github.com/01000101/cloudify-host-pool-plugin/archive/1.4-cfy3.2.1.zip
 
-data_types:
-  cloudify.datatypes.hostpool.Filters:
-    properties:
-      tags:
-        description: |
-          List of tags which all must match in the hosts' tags list
-        required: false
-        default: []
+#data_types:
+#  cloudify.datatypes.hostpool.Filters:
+#    properties:
+#      tags:
+#        description: |
+#          List of tags which all must match in the hosts' tags list
+#        required: false
+#        default: []
 
 node_types:
   cloudify.hostpool.nodes.Host:
@@ -30,7 +28,7 @@ node_types:
       filters:
         description: |
           A dictionary of values to pass as filters
-        type: cloudify.datatypes.hostpool.Filters
+        #type: cloudify.datatypes.hostpool.Filters
         required: false
     interfaces:
       cloudify.interfaces.worker_installer:
@@ -107,9 +105,11 @@ node_types:
       os:
         default: windows
     interfaces:
+      cloudify.interfaces.plugin_installer:
+        install: windows_plugin_installer.windows_plugin_installer.tasks.install
       cloudify.interfaces.worker_installer:
         install:
-          implementation: agent.windows_agent_installer.tasks.install
+          implementation: windows_agent_installer.windows_agent_installer.tasks.install
           inputs:
             cloudify_agent:
               default:
@@ -118,7 +118,7 @@ node_types:
                 password: { get_attribute: [SELF, password] }
                 port: { get_attribute: [SELF, port] }
         start:
-          implementation: agent.windows_agent_installer.tasks.start
+          implementation: windows_agent_installer.windows_agent_installer.tasks.start
           inputs:
             cloudify_agent:
               default:
@@ -127,7 +127,7 @@ node_types:
                 password: { get_attribute: [SELF, password] }
                 port: { get_attribute: [SELF, port] }
         stop:
-          implementation: agent.windows_agent_installer.tasks.stop
+          implementation: windows_agent_installer.windows_agent_installer.tasks.stop
           inputs:
             cloudify_agent:
               default:
@@ -136,7 +136,7 @@ node_types:
                 password: { get_attribute: [SELF, password] }
                 port: { get_attribute: [SELF, port] }
         uninstall:
-          implementation: agent.windows_agent_installer.tasks.uninstall
+          implementation: windows_agent_installer.windows_agent_installer.tasks.uninstall
           inputs:
             cloudify_agent:
               default:
@@ -145,7 +145,7 @@ node_types:
                 password: { get_attribute: [SELF, password] }
                 port: { get_attribute: [SELF, port] }
         restart:
-          implementation: agent.windows_agent_installer.tasks.restart
+          implementation: windows_agent_installer.windows_agent_installer.tasks.restart
           inputs:
             cloudify_agent:
               default:
