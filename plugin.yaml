@@ -24,12 +24,10 @@ node_types:
         description: |
           Host OS to search for
         type: string
-        required: true
       filters:
         description: |
           A dictionary of values to pass as filters
         #type: cloudify.datatypes.hostpool.Filters
-        required: false
     interfaces:
       cloudify.interfaces.worker_installer:
         install:
